@@ -1,5 +1,5 @@
 **/target/
-.idea
+.vscode
 *.iml
 *.class
 *Test.java
