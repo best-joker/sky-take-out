@@ -30,6 +30,8 @@ public class Employee implements Serializable {
 
     private String idNumber;
 
+    // 一下内容是前端不返回的
+
     private Integer status;
 
     //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
