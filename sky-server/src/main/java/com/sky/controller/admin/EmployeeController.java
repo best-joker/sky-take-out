@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 /**
@@ -103,4 +104,20 @@ public class EmployeeController {
         PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
         return Result.success(pageResult);
     }
+
+
+    /**
+     * 启用和禁用员工
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用和禁用员工")
+    public Result startOrStop(@PathVariable Integer status,Long id) {
+        log.info("启用和禁用员工");
+        employeeService.startOrStop(status,id);
+        return Result.success();
+    }
+    
 }
