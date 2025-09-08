@@ -32,9 +32,12 @@ public interface DishMapper {
     Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
 
     @Select("select * from dish where id = #{id}")
-    Dish getId(Long id);
+    Dish getById(Long id);
 
     @Delete("delete from dish where id = #{id}")
     void deleteById(Long id);
+
+    @AutoFill(value = OperationType.UPDATE)
+    void upDate(Dish dish);
 
 }
