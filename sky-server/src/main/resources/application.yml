@@ -41,4 +41,13 @@ sky:
     # 设置jwt过期时间
     admin-ttl: 7200000
     # 设置前端传递过来的令牌名称
+
+    # 微信小程序相关配置
     admin-token-name: token
+    user-secret-key: sky
+    user-ttl: 7200000
+    user-token-name: authentication
+  wechat:
+    appid: ${sky.wechat.appid}
+    secret: ${sky.wechat.secret}
+    
