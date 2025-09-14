@@ -5,4 +5,4 @@
 *Test.java
 **/test/
 Other resources/
-sky-server/src/main/resources/application-dev.yml
+# sky-server/src/main/resources/application-dev.yml
