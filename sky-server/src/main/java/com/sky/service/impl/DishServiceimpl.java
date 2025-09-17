@@ -19,7 +19,7 @@ import com.sky.entity.DishFlavor;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
-import com.sky.mapper.SetmealsDishMapper;
+import com.sky.mapper.SetmealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
@@ -37,7 +37,7 @@ public class DishServiceimpl implements DishService{
     private DishFlavorMapper dishFlavorMapper;
 
     @Autowired
-    private SetmealsDishMapper setmealsDishMapper;
+    private SetmealDishMapper setmealDishMapper;
 
     @Transactional
     @Override
@@ -80,7 +80,7 @@ public class DishServiceimpl implements DishService{
             }
         }
         
-        List<Long> setmealIds = setmealsDishMapper.getsetmealIdByDishIds(ids);
+        List<Long> setmealIds = setmealDishMapper.getsetmealIdByDishIds(ids);
         if (setmealIds != null && setmealIds.size() > 0) {
             throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
         }
