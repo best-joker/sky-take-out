@@ -44,4 +44,10 @@
         </set>
         where id = #{id}
     </update>
+
+    <!-- list --> 
+
+    <select id="list" resultType="com.sky.entity.Dish">
+        select * from dish where category_id = #{categoryId}
+    </select>
 </mapper>
