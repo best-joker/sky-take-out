@@ -25,7 +25,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class SetmealServiceImpl implements SetmealService {
+public class SetmealServiceimpl implements SetmealService {
 
     @Autowired
     private SetmealMapper setmealMapper;
