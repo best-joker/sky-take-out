@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import com.sky.dto.UserLoginDTO;
 import com.sky.entity.User;
 import com.sky.properties.JwtProperties;
 import com.sky.result.Result;
+import com.sky.service.OrderService;
 import com.sky.service.UserService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.UserLoginVO;
@@ -32,6 +35,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private JwtProperties jwtProperties;
+    @Autowired
+    private OrderService orderService;
 
     @ApiOperation("微信登录")
     @PostMapping("/login")
@@ -48,6 +53,13 @@ public class UserController {
                                 .token(token)
                                 .build();
         return Result.success(userLoginVO);
+    }
+
+    @GetMapping("/reminder/{id}")
+    @ApiOperation("用户催单")
+    public Result remind(@PathVariable Long id) {
+        orderService.remind(id);
+        return Result.success();
     }
 
 }

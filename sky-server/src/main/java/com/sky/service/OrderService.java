@@ -7,4 +7,6 @@ public interface OrderService {
 
     OrderSubmitVO submitOrder(OrdersSubmitDTO ordersSubmitDTO);
 
+    void remind(Long id);
+
 }
