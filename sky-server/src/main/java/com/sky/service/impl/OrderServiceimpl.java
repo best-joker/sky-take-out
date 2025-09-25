@@ -2,13 +2,16 @@ package com.sky.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
+import com.sky.websocket.WebSocketServer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSON;
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.OrdersSubmitDTO;
@@ -17,6 +20,7 @@ import com.sky.entity.OrderDetail;
 import com.sky.entity.Orders;
 import com.sky.entity.ShoppingCart;
 import com.sky.exception.AddressBookBusinessException;
+import com.sky.exception.OrderBusinessException;
 import com.sky.exception.ShoppingCartBusinessException;
 import com.sky.mapper.AddressBookMapper;
 import com.sky.mapper.OrderDetailMapper;
@@ -29,6 +33,8 @@ import com.sky.vo.OrderSubmitVO;
 @Service
 public class OrderServiceimpl implements OrderService{
 
+    private final WebSocketServer webSocketServer;
+
     @Autowired
     private OrderMapper orderMapper;
 
@@ -40,6 +46,10 @@ public class OrderServiceimpl implements OrderService{
 
     @Autowired
     private ShoppingCartMapper shoppingCartMapper;
+
+    OrderServiceimpl(WebSocketServer webSocketServer) {
+        this.webSocketServer = webSocketServer;
+    }
 
     /**
      * 用户下单
@@ -66,8 +76,8 @@ public class OrderServiceimpl implements OrderService{
         orders.setOrderTime(LocalDateTime.now());
         orders.setConsignee(addressBook.getConsignee());
         orders.setPhone(addressBook.getPhone());
-        orders.setPayStatus(orders.UN_PAID);
-        orders.setStatus(orders.PENDING_PAYMENT);
+        orders.setPayStatus(Orders.UN_PAID);
+        orders.setStatus(Orders.PENDING_PAYMENT);
         orders.setNumber(String.valueOf(System.currentTimeMillis()));//以当前的时间戳为订单号
         orders.setUserId(BaseContext.getCurrentId());
 
@@ -95,6 +105,20 @@ public class OrderServiceimpl implements OrderService{
                         .build();
 
         return orderSubmitVO;
+    }
+
+    @Override
+    public void remind(Long id) {
+        Orders orders = orderMapper.getById(id);
+        if (orders == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        Map hashMap = new HashMap();
+        hashMap.put("type", 2); //1为来单提醒，2为用户催单
+        hashMap.put("orderId", id);
+        hashMap.put("content", "订单号," + orders.getNumber());
+        webSocketServer.sendToAllClient(JSON.toJSONString(hashMap));
     }
     
 }
