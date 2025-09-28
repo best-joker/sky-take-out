@@ -89,7 +89,7 @@ public class OrderServiceimpl implements OrderService{
         for (ShoppingCart cart : shoppingCartlist) {
             OrderDetail orderDetail = new OrderDetail();
             BeanUtils.copyProperties(cart,orderDetail);
-            orderDetail.setOrderId(cart.getId());
+            orderDetail.setOrderId(orders.getId());
             orderDetailList.add(orderDetail);
         }
 

@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sky.result.Result;
 import com.sky.service.ReportService;
 import com.sky.vo.OrderReportVO;
+import com.sky.vo.SalesTop10ReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -62,4 +62,14 @@ public class ReportController {
         return Result.success(reportService.getOrdersStatistics(begin, end));
     }
     
+
+    @GetMapping("/top10")
+    @ApiOperation("销量前十统计")
+    public Result<SalesTop10ReportVO> top10(
+        @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate begin,
+        @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end
+    ) {
+        log.info("前10统计:{},{}",begin,end);
+        return Result.success(reportService.getSalesTop10(begin, end));
+    }
 }
